@@ -1,44 +1,93 @@
 <template>
-    <div class="too-App">
-       <h3>Todo App</h3>
-      <TodoList :todos="myTasks" />
-    </div>
+  <div class="too-App">
+    <h3>Todo App</h3>
+    <template v-if="todoList.length > 0">
+      <TodoList :todos="todoList" @toggle="changeCompletion" />
+    </template>
+    <p v-else>No Todos to Show</p>
+  </div>
 </template>
 
 <script>
-import TodoList from '../components/TodoList.vue'
+import TodoList from "../components/TodoList.vue";
 
 export default {
-    name: 'DashboardView',
-    components: {
-    TodoList
+  name: "DashboardView",
+  components: {
+    TodoList,
   },
   data() {
     return {
-      myTasks: [
-        { id: 1, text: 'Study Phase 3 Single File Component structures', done: true },
-        { id: 2, text: 'Build a working nested slot pipeline demonstration', done: true },
-        { id: 3, text: 'Add an interactive task submission input field to the App deck', done: false }
-      ]
-    }
-  }
-}
+      todoList: [],
+    };
+  },
+  mounted() {
+    this.fetchtodos();
+  },
+  methods: {
+    async fetchtodos() {
+      try {
+        const response = await fetch("https://dummyjson.com/todos/user/1");
+
+        const data = await response.json();
+        this.todoList = data.todos;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    changeCompletion(id) {
+      console.log(id);
+      this.todoList.filter((item) => {
+        if (item.id === id) {
+          item.completed = !item.completed;
+        }
+      });
+    },
+  },
+};
 </script>
-<style  scoped>
-
-.app-card {
+<style scoped>
+.too-App {
+  max-width: 800px;
   width: 100%;
-  max-width: 450px;
-  background: white;
+  margin: 40px auto;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-}
-h2 {
-  margin-top: 0;
-  color: #2d3748;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 10px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+h3 {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a202c; 
+  margin-top: 0;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+}
+
+h3::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 32px;
+  height: 4px;
+  background-color: #42b983; 
+  border-radius: 2px;
+}
+
+p {
+  text-align: center;
+  color: #718096; 
+  font-size: 15px;
+  padding: 40px 20px;
+  background-color: #f7fafc;
+  border: 1.5px dashed #e2e8f0;
+  border-radius: 12px;
+  margin: 0;
+}
 </style>
