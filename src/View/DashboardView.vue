@@ -10,38 +10,26 @@
 
 <script>
 import TodoList from "../components/TodoList.vue";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "DashboardView",
   components: {
     TodoList,
   },
+  computed: {
+    ...mapState(["todoList"]),
+  },
   data() {
-    return {
-      todoList: [],
-    };
+    return {};
   },
   mounted() {
-    this.fetchtodos();
+    this.handlefetchtodos();
   },
   methods: {
-    async fetchtodos() {
-      try {
-        const response = await fetch("https://dummyjson.com/todos/user/1");
-
-        const data = await response.json();
-        this.todoList = data.todos;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    ...mapActions(["handlefetchtodos", "toggleTodoStatus"]),
     changeCompletion(id) {
-      console.log(id);
-      this.todoList.filter((item) => {
-        if (item.id === id) {
-          item.completed = !item.completed;
-        }
-      });
+      this.toggleTodoStatus(id);
     },
   },
 };
@@ -55,13 +43,14 @@ export default {
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
 }
 
 h3 {
   font-size: 26px;
   font-weight: 800;
-  color: #1a202c; 
+  color: #1a202c;
   margin-top: 0;
   margin-bottom: 24px;
   letter-spacing: -0.5px;
@@ -70,19 +59,19 @@ h3 {
 }
 
 h3::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -6px;
   left: 0;
   width: 32px;
   height: 4px;
-  background-color: #42b983; 
+  background-color: #42b983;
   border-radius: 2px;
 }
 
 p {
   text-align: center;
-  color: #718096; 
+  color: #718096;
   font-size: 15px;
   padding: 40px 20px;
   background-color: #f7fafc;

@@ -35,6 +35,19 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error(error);
             }
+        },
+        async handlefetchtodos(context) {
+            try {
+                const response = await fetch(`https://dummyjson.com/todos/user/${context.state.userid}`);
+                const data = await response.json();
+                console.log(data)
+                context.commit('SET_TODO_LIST', data.todos);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        toggleTodoStatus(context, id) {
+            context.commit('TOGGLE_TODO', id);
         }
     },
     mutations: {
@@ -42,5 +55,15 @@ export default new Vuex.Store({
             state.userToken = payload.accessToken;
             state.userid = payload.id;
         },
+        SET_TODO_LIST(state, payload) {
+            state.todoList = payload;
+        },
+        TOGGLE_TODO(state, id) {
+            const targetTodo = state.todoList.find(item => item.id === id);
+            if (targetTodo) {
+                targetTodo.completed = !targetTodo.completed;
+            }
+        }
+
     },
 })
