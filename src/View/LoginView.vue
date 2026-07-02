@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "LoginView",
   data() {
@@ -39,22 +41,20 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["handleUserLogin"]),
+
     async login() {
       this.islogin = true;
-      const response = await fetch("https://dummyjson.com/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-          expiresInMins: 60,
-        }),
+      const loginSuccess = await this.handleUserLogin({
+        username: this.username,
+        password: this.password,
       });
 
-      const data = await response.json();
-      console.log(data);
-
       this.islogin = false;
+
+      if (loginSuccess) {
+        this.$router.push("/dashboard");
+      }
     },
   },
 };
