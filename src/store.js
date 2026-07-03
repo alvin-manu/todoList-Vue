@@ -7,7 +7,7 @@ export default new Vuex.Store({
     state: {
         userToken: sessionStorage.getItem('userToken') || null,
         userid: sessionStorage.getItem('userid') || null,
-        todoList: []
+        todoList: JSON.parse(sessionStorage.getItem('todoList')) || []
     },
     actions: {
         async handleUserLogin(context, credentials) {
@@ -40,7 +40,9 @@ export default new Vuex.Store({
             try {
                 const response = await fetch(`https://dummyjson.com/todos/user/${context.state.userid}`);
                 const data = await response.json();
-                console.log(data)
+
+                sessionStorage.setItem("todoList", JSON.stringify(data.todos));
+
                 context.commit('SET_TODO_LIST', data.todos);
             } catch (error) {
                 console.log(error);
@@ -48,12 +50,18 @@ export default new Vuex.Store({
         },
         toggleTodoStatus(context, id) {
             context.commit('TOGGLE_TODO', id);
+            sessionStorage.setItem("todoList", JSON.stringify(context.state.todoList));
+
         },
         addTodo(context, data) {
+            console.log("suiii")
             context.commit('CREATE_TODO', data);
+            sessionStorage.setItem("todoList", JSON.stringify(context.state.todoList));
+
         },
         handleRemoveTodo(context, id) {
             context.commit('DELETE_TODO', id)
+            sessionStorage.setItem("todoList", JSON.stringify(context.state.todoList));
         }
     },
     mutations: {

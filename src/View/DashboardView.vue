@@ -8,7 +8,11 @@
     </div>
     <h4>Todo Tasks</h4>
     <template v-if="todoList.length > 0">
-      <TodoList :todos="todoList" @toggle="changeCompletion" @delete="deleteTodo" />
+      <TodoList
+        :todos="todoList"
+        @toggle="changeCompletion"
+        @delete="deleteTodo"
+      />
     </template>
     <p v-else>No Todos to Show</p>
   </div>
@@ -32,10 +36,17 @@ export default {
     };
   },
   mounted() {
-    this.handlefetchtodos();
+    if (this.todoList.length === 0) {
+      this.handlefetchtodos();
+    }
   },
   methods: {
-    ...mapActions(["handlefetchtodos", "toggleTodoStatus", "addTodo", "handleRemoveTodo"]),
+    ...mapActions([
+      "handlefetchtodos",
+      "toggleTodoStatus",
+      "addTodo",
+      "handleRemoveTodo",
+    ]),
     changeCompletion(id) {
       this.toggleTodoStatus(id);
     },
@@ -54,9 +65,9 @@ export default {
       this.addTodo(data);
     },
 
-    deleteTodo(id){
-      this.handleRemoveTodo(id)
-    }
+    deleteTodo(id) {
+      this.handleRemoveTodo(id);
+    },
   },
 };
 </script>
