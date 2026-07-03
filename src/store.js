@@ -48,6 +48,9 @@ export default new Vuex.Store({
         },
         toggleTodoStatus(context, id) {
             context.commit('TOGGLE_TODO', id);
+        },
+        addTodo(context, data) {
+            context.commit('CREATE_TODO', data);
         }
     },
     mutations: {
@@ -63,6 +66,9 @@ export default new Vuex.Store({
             if (targetTodo) {
                 targetTodo.completed = !targetTodo.completed;
             }
+        },
+        CREATE_TODO(state, payload) {
+            state.todoList.push(payload)
         }
 
     },

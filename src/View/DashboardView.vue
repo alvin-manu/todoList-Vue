@@ -1,6 +1,12 @@
 <template>
   <div class="too-App">
     <h3>Todo App</h3>
+    <br />
+    <div class="input-group">
+      <input type="text" v-model="todoTask" placeholder="Enter a todo task" />
+      <button @click="createTodo">Create Todo</button>
+    </div>
+    <h4>Todo Tasks</h4>
     <template v-if="todoList.length > 0">
       <TodoList :todos="todoList" @toggle="changeCompletion" />
     </template>
@@ -21,15 +27,31 @@ export default {
     ...mapState(["todoList"]),
   },
   data() {
-    return {};
+    return {
+      todoTask: null,
+    };
   },
   mounted() {
     this.handlefetchtodos();
   },
   methods: {
-    ...mapActions(["handlefetchtodos", "toggleTodoStatus"]),
+    ...mapActions(["handlefetchtodos", "toggleTodoStatus", "addTodo"]),
     changeCompletion(id) {
       this.toggleTodoStatus(id);
+    },
+    createTodo() {
+      if (!this.todoTask) {
+        alert("Enter a task");
+        return;
+      }
+      const date = Date.now();
+      console.log(date);
+      const data = {
+        id: date,
+        todo: this.todoTask,
+        completed: false,
+      };
+      this.addTodo(data);
     },
   },
 };
@@ -78,5 +100,70 @@ p {
   border: 1.5px dashed #e2e8f0;
   border-radius: 12px;
   margin: 0;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #f8fafc; /* Soft off-white canvas backdrop */
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 4px 6px 4px 16px; /* Strategic padding to isolate elements */
+  margin-top: 20px;
+  margin-bottom: 24px;
+  transition: all 0.25s ease-in-out;
+}
+
+/* 2. Interactive States for the Unified Container Box */
+.input-group:hover {
+  border-color: #cbd5e0;
+}
+
+/* Focus Ring moves dynamically down to the entire input group frame */
+.input-group:focus-within {
+  background-color: #ffffff;
+  border-color: #42b983; /* Vue emerald accent green color */
+  box-shadow: 0 0 0 4px rgba(66, 185, 131, 0.12);
+}
+
+/* 3. Streamlined Clean Input Tag Elements */
+.input-group input[type="text"] {
+  flex: 1; /* Instructs the text field to claim all empty remaining width */
+  border: none;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #2d3748;
+  outline: none;
+}
+
+.input-group input[type="text"]::placeholder {
+  color: #a0aec0;
+  font-weight: 400;
+}
+
+/* 4. The Integrated Create Action Button Layout */
+.input-group button {
+  background-color: #42b983;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 8px; /* Slightly tighter curves to fit nested inner rows neatly */
+  cursor: pointer;
+  white-space: nowrap; /* Prevents the text string from wrapping on small screens */
+  transition: all 0.2s ease;
+}
+
+.input-group button:hover {
+  background-color: #38a169;
+}
+
+/* Tactile Click Press Animation Feedback */
+.input-group button:active {
+  background-color: #2f855a;
+  transform: scale(0.96);
 }
 </style>
