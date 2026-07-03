@@ -1,31 +1,34 @@
 <template>
-  <div class="too-App">
-    <h3>Todo App</h3>
-    <br />
-    <div class="input-group">
-      <input type="text" v-model="todoTask" placeholder="Enter a todo task" />
-      <button @click="createTodo">Create Todo</button>
+  <div class="main">
+    <HeaderComponent />
+    <div class="too-App">
+      <div class="input-group">
+        <input type="text" v-model="todoTask" placeholder="Enter a todo task" />
+        <button @click="createTodo">Create Todo</button>
+      </div>
+      <h4>Todo Tasks</h4>
+      <template v-if="todoList.length > 0">
+        <TodoList
+          :todos="todoList"
+          @toggle="changeCompletion"
+          @delete="deleteTodo"
+        />
+      </template>
+      <p v-else>No Todos to Show</p>
     </div>
-    <h4>Todo Tasks</h4>
-    <template v-if="todoList.length > 0">
-      <TodoList
-        :todos="todoList"
-        @toggle="changeCompletion"
-        @delete="deleteTodo"
-      />
-    </template>
-    <p v-else>No Todos to Show</p>
   </div>
 </template>
 
 <script>
 import TodoList from "../components/TodoList.vue";
+import HeaderComponent from "../components/Header.vue";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "DashboardView",
   components: {
     TodoList,
+    HeaderComponent,
   },
   computed: {
     ...mapState(["todoList"]),
@@ -72,6 +75,9 @@ export default {
 };
 </script>
 <style scoped>
+.main{
+  width: 100%;
+}
 .too-App {
   max-width: 800px;
   width: 100%;

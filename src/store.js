@@ -62,6 +62,10 @@ export default new Vuex.Store({
         handleRemoveTodo(context, id) {
             context.commit('DELETE_TODO', id)
             sessionStorage.setItem("todoList", JSON.stringify(context.state.todoList));
+        },
+        handleLogout(context) {
+            console.log("ssss")
+            context.commit('LOGOUT_USER')
         }
     },
     mutations: {
@@ -85,6 +89,12 @@ export default new Vuex.Store({
             state.todoList = state.todoList.filter(item => {
                 return item.id !== id
             })
+        },
+        LOGOUT_USER(state) {
+            sessionStorage.clear();
+            state.userToken = null
+            state.userid = null
+            state.todoList = []
         }
 
     },
