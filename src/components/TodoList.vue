@@ -6,12 +6,20 @@
           {{ todo.todo }}
         </span>
 
-        <button @click="$emit('toggle', todo.id)">
-          <span v-if="todo.completed"><i class="fa-solid fa-check"></i></span>
-          <span v-else
-            ><i class="fa-regular fa-circle" style="color: rgb(210, 0, 0)"></i
-          ></span>
-        </button>
+        <div class="btn-group">
+          <i
+            class="fa-solid fa-trash-can delete-btn"
+            style="color: rgb(210, 0, 0)"
+            @click="$emit('delete', todo.id)"
+          ></i>
+
+          <button @click="$emit('toggle', todo.id)">
+            <span v-if="todo.completed"><i class="fa-solid fa-check"></i></span>
+            <span v-else
+              ><i class="fa-regular fa-circle" style="color: rgb(210, 0, 0)"></i
+            ></span>
+          </button>
+        </div>
       </li>
     </ul>
 
@@ -27,7 +35,7 @@ export default {
       type: Array,
       required: true,
     },
-  }
+  },
 };
 </script>
 
@@ -89,11 +97,11 @@ button {
 }
 
 button:active {
-  transform: scale(0.92); 
+  transform: scale(0.92);
 }
 
 .fa-check {
-  color: #42b983; 
+  color: #42b983;
 }
 
 .fa-circle {
@@ -111,5 +119,14 @@ button:hover .fa-circle {
   padding: 30px;
   background: #f7fafc;
   border-radius: 8px;
+}
+.btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.delete-btn {
+  cursor: pointer;
 }
 </style>
