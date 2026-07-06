@@ -44,6 +44,10 @@ export default {
     ...mapActions(["handleUserLogin"]),
 
     async login() {
+      if(!this.username || !this.password){
+        this.$toast.warning("Username and Password must not be empty")
+        return
+      }
       this.islogin = true;
       const loginSuccess = await this.handleUserLogin({
         username: this.username,

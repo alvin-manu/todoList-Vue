@@ -55,7 +55,7 @@ export default {
     },
     createTodo() {
       if (!this.todoTask) {
-        alert("Enter a task");
+        this.$toast.warning("Enter a task");
         return;
       }
       const date = Date.now();
@@ -66,6 +66,7 @@ export default {
         completed: false,
       };
       this.addTodo(data);
+      this.todoTask = "";
     },
 
     deleteTodo(id) {
@@ -75,7 +76,7 @@ export default {
 };
 </script>
 <style scoped>
-.main{
+.main {
   width: 100%;
 }
 .too-App {

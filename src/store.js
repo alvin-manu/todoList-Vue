@@ -22,6 +22,10 @@ export default new Vuex.Store({
                     }),
                 });
 
+                if (!response.ok) {
+                    Vue.$toast.error("Invalid Username or Password")
+                    return
+                }
                 const data = await response.json();
 
                 if (response.ok && data.accessToken) {
@@ -31,14 +35,17 @@ export default new Vuex.Store({
                     return true;
                 }
 
-                alert(data.message || "Invalid Username or Password");
             } catch (error) {
-                console.error(error);
+                Vue.$toast.error("Server connection lost.")
             }
         },
         async handlefetchtodos(context) {
             try {
                 const response = await fetch(`https://dummyjson.com/todos/user/${context.state.userid}`);
+                if (!response.ok) {
+                    Vue.$toast.error("Server connection lost. Please refresh Page")
+                    return
+                }
                 const data = await response.json();
 
                 sessionStorage.setItem("todoList", JSON.stringify(data.todos));
