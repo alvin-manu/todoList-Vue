@@ -10,7 +10,7 @@
           <i
             class="fa-solid fa-trash-can delete-btn"
             style="color: rgb(210, 0, 0)"
-            @click="$emit('delete', todo.id)"
+            @click="deleteTodo(todo.id)"
           ></i>
 
           <button @click="$emit('toggle', todo.id)">
@@ -24,16 +24,51 @@
     </ul>
 
     <p v-else class="empty-msg">No tasks for today! Enjoy your time.</p>
+    <ConfirmModal
+      :show="isModalOpen"
+      @close="isModalOpen = false"
+      @confirm="executeConfirmedDelete"
+    />
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import ConfirmModal from "./ConfirmModal.vue";
+
 export default {
   name: "TodoList",
+  components: {
+    ConfirmModal,
+  },
   props: {
     todos: {
       type: Array,
       required: true,
+    },
+  },
+  data() {
+    return {
+      isModalOpen: false,
+      deleteTodoId: null,
+    };
+  },
+  methods: {
+    ...mapActions(["handleRemoveTodo"]),
+
+    executeConfirmedDelete() {
+      if (this.deleteTodoId !== null) {
+        this.handleRemoveTodo(this.deleteTodoId);
+        this.$toast.success("Task deleted successfully!");
+      }
+
+      this.isModalOpen = false;
+      this.deleteTodoId = null;
+    },
+
+    deleteTodo(id) {
+      this.isModalOpen = true;
+      this.deleteTodoId = id;
     },
   },
 };

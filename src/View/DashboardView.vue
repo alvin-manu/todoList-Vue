@@ -11,7 +11,6 @@
         <TodoList
           :todos="todoList"
           @toggle="changeCompletion"
-          @delete="deleteTodo"
         />
       </template>
       <p v-else>No Todos to Show</p>
@@ -48,7 +47,6 @@ export default {
       "handlefetchtodos",
       "toggleTodoStatus",
       "addTodo",
-      "handleRemoveTodo",
     ]),
     changeCompletion(id) {
       this.toggleTodoStatus(id);
@@ -67,10 +65,6 @@ export default {
       };
       this.addTodo(data);
       this.todoTask = "";
-    },
-
-    deleteTodo(id) {
-      this.handleRemoveTodo(id);
     },
   },
 };
