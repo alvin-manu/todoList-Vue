@@ -8,10 +8,7 @@
       </div>
       <h4>Todo Tasks</h4>
       <template v-if="todoList.length > 0">
-        <TodoList
-          :todos="todoList"
-          @toggle="changeCompletion"
-        />
+        <TodoList :todos="todoList" @toggle="changeCompletion" />
       </template>
       <p v-else>No Todos to Show</p>
     </div>
@@ -43,11 +40,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      "handlefetchtodos",
-      "toggleTodoStatus",
-      "addTodo",
-    ]),
+    ...mapActions(["handlefetchtodos", "toggleTodoStatus", "addTodo"]),
     changeCompletion(id) {
       this.toggleTodoStatus(id);
     },
@@ -75,6 +68,7 @@ export default {
 }
 .too-App {
   max-width: 800px;
+  box-sizing: border-box;
   width: 100%;
   margin: 40px auto;
   padding: 30px;
@@ -121,30 +115,27 @@ p {
 .input-group {
   display: flex;
   align-items: center;
-  background-color: #f8fafc; /* Soft off-white canvas backdrop */
+  background-color: #f8fafc; 
   border: 1.5px solid #e2e8f0;
   border-radius: 12px;
-  padding: 4px 6px 4px 16px; /* Strategic padding to isolate elements */
+  padding: 4px 6px 4px 16px; 
   margin-top: 20px;
   margin-bottom: 24px;
   transition: all 0.25s ease-in-out;
 }
 
-/* 2. Interactive States for the Unified Container Box */
 .input-group:hover {
   border-color: #cbd5e0;
 }
 
-/* Focus Ring moves dynamically down to the entire input group frame */
 .input-group:focus-within {
   background-color: #ffffff;
-  border-color: #42b983; /* Vue emerald accent green color */
+  border-color: #42b983; 
   box-shadow: 0 0 0 4px rgba(66, 185, 131, 0.12);
 }
 
-/* 3. Streamlined Clean Input Tag Elements */
 .input-group input[type="text"] {
-  flex: 1; /* Instructs the text field to claim all empty remaining width */
+  flex: 1;
   border: none;
   background: transparent;
   padding: 12px 0;
@@ -159,7 +150,6 @@ p {
   font-weight: 400;
 }
 
-/* 4. The Integrated Create Action Button Layout */
 .input-group button {
   background-color: #42b983;
   color: #ffffff;
@@ -167,9 +157,9 @@ p {
   padding: 12px 24px;
   font-size: 15px;
   font-weight: 700;
-  border-radius: 8px; /* Slightly tighter curves to fit nested inner rows neatly */
+  border-radius: 8px;
   cursor: pointer;
-  white-space: nowrap; /* Prevents the text string from wrapping on small screens */
+  white-space: nowrap;
   transition: all 0.2s ease;
 }
 
@@ -177,9 +167,14 @@ p {
   background-color: #38a169;
 }
 
-/* Tactile Click Press Animation Feedback */
 .input-group button:active {
   background-color: #2f855a;
   transform: scale(0.96);
+}
+
+@media (max-width: 480px) {
+  .too-App {
+    padding: 10px;
+  }
 }
 </style>
